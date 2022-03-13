@@ -1,3 +1,4 @@
+import 'package:fireflower_music_app/api/hello.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: '花火音乐盒'),
     );
   }
 }
@@ -50,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  String message = '花火音乐盒';
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -60,6 +63,17 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+  void _fetchData() {
+    sayHello().then((value) => {
+          setState(() {
+            message = value;
+          })
+        });
+  }
+
+  final ButtonStyle buttonStyle =
+      ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(message, style: Theme.of(context).textTheme.headline5),
+            ElevatedButton(
+              style: buttonStyle,
+              onPressed: _fetchData,
+              child: const Text('请求数据'),
+            ),
+            const SizedBox(height: 30),
             const Text(
-              'You have pushed the button this many times:',
+              '你的点击次数为:',
             ),
             Text(
               '$_counter',
